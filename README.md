@@ -82,6 +82,135 @@
 После форматирования подключите уже подготовленный накопитель c файловой системой **EXT4** к USB-порту роутера. Диск должен отобразиться на странице "Приложения" в разделе "Диски и принтеры". Если USB-накопитель не определился в роутере, проверьте установлен ли компонент операционной системы "**Файловая система Ext**".
 
 > **Важно!** *Накопитель с файловой системой EXT4 нельзя использовать в ОС Windows. Если нужно подключить накопитель с EXT4 в Windows, можно воспользоваться специальным драйвером [ext2fsd](https://www.ext2fsd.com/), разработанным сообществом открытого программного обеспечения для файловых систем семейства ext.*
+<br>
+
+**Как отформатировать USB накопитель под macOS**
+
+**1) Установка Homebrew**
+
+>*Если менеджер пакетов установлен, можете пропустить этот пункт и перейти к следующему.*
+
+1. Запустите Терминал и введите следующую команду:
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+<p align="left">
+  <a href="https://github.com/Corvus-Malus/XKeen-docs/raw/main/images/macOS/macOS-1.jpg" target="_blank" rel="noopener noreferrer">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://github.com/Corvus-Malus/XKeen-docs/raw/main/images/macOS/macOS-1.jpg">
+      <img src="https://github.com/Corvus-Malus/XKeen-docs/raw/main/images/macOS/macOS-1.jpg">
+    </picture>
+  </a>
+</p>
+
+<p align="center"> 
+Подробнее на https://brew.sh
+</p>
+
+Введите пароль администратора системы и продолжите установку менеджера пакетов. 
+
+**2) Установка e2fsprogs**
+
+>***e2fsprogs** (иногда называемая e2fs programs) — набор служебных утилит с открытым исходным кодом для работы с файловыми системами ext2, ext3 и ext4, которые часто используются во множестве дистрибутивов Linux. Утилиты служат для проверки целостности файловых систем, поиска и исправления ошибок, изменения настроек, форматирования.*
+
+В терминале вводим команду: 
+
+```bash
+brew install e2fsprogs
+```
+
+<p align="left">
+  <a href="https://github.com/Corvus-Malus/XKeen-docs/raw/main/images/macOS/macOS-2.png" target="_blank" rel="noopener noreferrer">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://github.com/Corvus-Malus/XKeen-docs/raw/main/images/macOS/macOS-2.png">
+      <img src="https://github.com/Corvus-Malus/XKeen-docs/raw/main/images/macOS/macOS-2.png">
+    </picture>
+  </a>
+</p>
+
+<p align="center">
+Установка e2fsprogs
+</p">
+
+**3) Форматирование USB накопителя в Ext4**
+1. В терминале вводим команду:
+   
+```bash
+diskutil list
+```
+ Находим в списке нужное нам устройство.
+
+<p align="left">
+  <a href="https://github.com/Corvus-Malus/XKeen-docs/raw/main/images/macOS/macOS-3.png" target="_blank" rel="noopener noreferrer">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://github.com/Corvus-Malus/XKeen-docs/raw/main/images/macOS/macOS-3.png">
+      <img src="https://github.com/Corvus-Malus/XKeen-docs/raw/main/images/macOS/macOS-3.png">
+    </picture>
+  </a>
+</p>
+
+Запомните идентификатор устройства. В моем случае это **disk14**.
+
+2. В терминале введите команду, подставляя ваш идентификатор устройства (*в моем случае **disk14***):
+
+```bash
+diskutil unmountDisk disk14
+```
+
+ После этого устройство отключится от системы.
+
+<p align="left">
+  <a href="https://github.com/Corvus-Malus/XKeen-docs/raw/main/images/macOS/macOS-4.png" target="_blank" rel="noopener noreferrer">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://github.com/Corvus-Malus/XKeen-docs/raw/main/images/macOS/macOS-4.png">
+      <img src="https://github.com/Corvus-Malus/XKeen-docs/raw/main/images/macOS/macOS-4.png">
+    </picture>
+  </a>
+</p>
+
+3. В терминале введите команду, подставляя ваш идентификатор устройства (*в моем случае **disk14***):
+
+```bash
+sudo $(brew --prefix e2fsprogs)/sbin/mkfs.ext4 /dev/disk14
+```
+
+Введите пароль администратора системы и ожидайте.
+
+<p align="left">
+  <a href="https://github.com/Corvus-Malus/XKeen-docs/raw/main/images/macOS/macOS-5.png" target="_blank" rel="noopener noreferrer">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://github.com/Corvus-Malus/XKeen-docs/raw/main/images/macOS/macOS-5.png">
+      <img src="https://github.com/Corvus-Malus/XKeen-docs/raw/main/images/macOS/macOS-5.png">
+    </picture>
+  </a>
+</p>
+
+<p align="center">
+Форматирование прошло успешно
+</p">
+
+4. Переименуйте устройство (*обычно в **OPKG***).
+
+В терминале введите команду, подставляя ваш идентификатор устройства (*в моем случае **disk14***) и имя устройства, которое вы хотите задать (*в моем случае **OPKG***):
+
+```bash
+sudo $(brew --prefix e2fsprogs)/sbin/e2label /dev/disk14 OPKG
+```
+
+Вводите пароль администратора системы и ожидаете.
+
+<p align="left">
+  <a href="https://github.com/Corvus-Malus/XKeen-docs/raw/main/images/macOS/macOS-6.png" target="_blank" rel="noopener noreferrer">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://github.com/Corvus-Malus/XKeen-docs/raw/main/images/macOS/macOS-6.png">
+      <img src="https://github.com/Corvus-Malus/XKeen-docs/raw/main/images/macOS/macOS-6.png">
+    </picture>
+  </a>
+</p>
+
+Устройство отформатировано в Ext4 и готово к использованию.
 
 <br>
 Перед установкой OPKG и XKeen рекомендуется сделать резервную копию прошивки и настроек роутера.<br><br>
