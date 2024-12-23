@@ -214,7 +214,7 @@ sudo $(brew --prefix e2fsprogs)/sbin/e2label /dev/disk14 OPKG
 Устройство отформатировано в Ext4 и готово к использованию.
 </details>
 
-<br>
+<br><br>
 Перед установкой OPKG и XKeen рекомендуется сделать резервную копию прошивки и настроек роутера.<br><br>
 
   <a href="http://192.168.1.1/system" target="_blank" rel="noopener noreferrer">
